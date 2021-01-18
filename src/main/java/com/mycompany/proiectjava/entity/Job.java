@@ -17,20 +17,20 @@ import javax.persistence.Table;
  * @author neagoe
  */
 @Entity
-@Table(name="JOBS")
+@Table(name = "JOBS")
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
+
     private String job_name;
-    
+
     private String type;
-    
+
     private String study_level;
-    
+
     private String career_level;
 
     public String getJob_name() {
@@ -97,5 +97,5 @@ public class Job implements Serializable {
     public String toString() {
         return "com.mycompany.proiectjava.entity.Job[ id=" + id + " ]";
     }
-    
+
 }

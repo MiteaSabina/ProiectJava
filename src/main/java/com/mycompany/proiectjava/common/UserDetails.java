@@ -9,20 +9,23 @@ package com.mycompany.proiectjava.common;
  *
  * @author neagoe
  */
-public class UserDetails implements java.io.Serializable{
-    
+public class UserDetails implements java.io.Serializable {
+
     private Integer id;
-    
+
     private String username;
-    
+
     private String email;
-    
+
+    private String password;
+
     private String position;
 
-    public UserDetails(Integer id, String username, String email, String position) {
+    public UserDetails(Integer id, String username, String email, String password, String position) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.password = password;
         this.position = position;
     }
 
@@ -50,6 +53,14 @@ public class UserDetails implements java.io.Serializable{
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getPosition() {
         return position;
     }
@@ -57,7 +68,5 @@ public class UserDetails implements java.io.Serializable{
     public void setPosition(String position) {
         this.position = position;
     }
-    
-    
 
 }

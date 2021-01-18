@@ -10,6 +10,7 @@ import com.mycompany.proiectjava.common.UserDetails;
 import com.mycompany.proiectjava.entity.Job;
 import com.mycompany.proiectjava.entity.User;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJBException;
@@ -24,12 +25,17 @@ import javax.persistence.Query;
  */
 @Stateless
 public class JobBean {
-    
+
     private static final Logger LOG = Logger.getLogger(UserBean.class.getName());
 
     @PersistenceContext
     private EntityManager em;
-    
+
+    public JobDetails findById(Integer jobId) {
+        Job job = em.find(Job.class, jobId);
+        return new JobDetails(job.getId(), job.getJob_name(), job.getType(), job.getStudy_level(), job.getCareer_level());
+    }
+
     public List<JobDetails> getAllJobs() {
         LOG.info("getAllJobs");
         try {
@@ -54,6 +60,31 @@ public class JobBean {
         return detailsList;
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    public void createJob(String job_name, String type, String study_level, String career_level) {
+        LOG.info("createJob");
+        Job job = new Job();
+        job.setJob_name(job_name);
+        job.setType(type);
+        job.setStudy_level(study_level);
+        job.setCareer_level(career_level);
+
+        em.persist(job);
+    }
+
+    public void updateJob(int jobId, String job_name, String type, String study_level, String career_level) {
+        LOG.info("updateJob");
+        Job job = em.find(Job.class, jobId);
+        job.setJob_name(job_name);
+        job.setType(type);
+        job.setStudy_level(study_level);
+        job.setCareer_level(career_level);
+    }
+
+    public void deleteJobsByIds(Collection<Integer> ids) {
+        LOG.info("deleteJobsByIds");
+        for (Integer id : ids) {
+            Job job = em.find(Job.class, id);
+            em.remove(job);
+        }
+    }
 }

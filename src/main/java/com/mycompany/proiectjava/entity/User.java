@@ -10,25 +10,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author neagoe
  */
 @Entity
+@Table(name = "USERS")
+
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
+
     private String username;
-    
+
     private String email;
-    
+
     private String password;
-    
+
     private String position;
 
     public String getUsername() {
@@ -95,5 +98,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.mycompany.proiectjava.entity.User[ id=" + id + " ]";
     }
-    
+
 }

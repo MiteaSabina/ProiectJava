@@ -9,16 +9,16 @@ package com.mycompany.proiectjava.common;
  *
  * @author neagoe
  */
-public class JobDetails implements java.io.Serializable{
-    
+public class JobDetails implements java.io.Serializable {
+
     private Integer id;
-    
+
     private String job_name;
-    
+
     private String type;
-    
+
     private String study_level;
-    
+
     private String career_level;
 
     public JobDetails(Integer id, String job_name, String type, String study_level, String career_level) {
@@ -68,7 +68,5 @@ public class JobDetails implements java.io.Serializable{
     public void setCareer_level(String career_level) {
         this.career_level = career_level;
     }
-    
-    
-    
+
 }

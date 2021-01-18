@@ -9,35 +9,35 @@ package com.mycompany.proiectjava.common;
  *
  * @author neagoe
  */
-public class CandidateDetails implements java.io.Serializable{
-    
+public class CandidateDetails implements java.io.Serializable {
+
     private Integer id;
-    
+
     private String name;
-    
+
     private String surname;
-    
-    private Integer phone;
-    
+
+    private String phone;
+
     private String email;
-    
+
     private String birthday;
-    
+
     private String sex;
-    
+
     private String nationality;
-    
+
     private String applied_job;
-    
+
     private String career_level;
-    
+
     private String study_level;
-    
+
     private String native_language;
-    
+
     private String foreign_languages;
 
-    public CandidateDetails(Integer id, String name, String surname, Integer phone, String email, String birthday, String sex, String nationality, String applied_job, String career_level, String study_level, String native_language, String foreign_languages) {
+    public CandidateDetails(Integer id, String name, String surname, String phone, String email, String birthday, String sex, String nationality, String applied_job, String career_level, String study_level, String native_language, String foreign_languages) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -77,11 +77,11 @@ public class CandidateDetails implements java.io.Serializable{
         this.surname = surname;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -156,6 +156,5 @@ public class CandidateDetails implements java.io.Serializable{
     public void setForeign_languages(String foreign_languages) {
         this.foreign_languages = foreign_languages;
     }
-    
-    
+
 }

@@ -9,9 +9,13 @@ import com.mycompany.proiectjava.common.JobDetails;
 import com.mycompany.proiectjava.ejb.JobBean;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +25,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author neagoe
  */
+@DeclareRoles({"AdminRole", "DirectorGeneralRole", "DirectorDepartamentRole", "DirectorHRRole", "RecruiterRole"})
+@ServletSecurity(
+        value = @HttpConstraint(
+                rolesAllowed = {"DirectorGeneralRole", "DirectorDepartamentRole", "DirectorHRRole", "RecruiterRole"}))
+
 @WebServlet(name = "Jobs", urlPatterns = {"/Jobs"})
 public class Jobs extends HttpServlet {
-    
+
     @Inject
     private JobBean jobBean;
 
@@ -44,7 +53,7 @@ public class Jobs extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Jobs</title>");            
+            out.println("<title>Servlet Jobs</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Jobs at " + request.getContextPath() + "</h1>");
@@ -65,9 +74,9 @@ public class Jobs extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setAttribute("activePage", "Jobs");
-        
+
         List<JobDetails> jobs = jobBean.getAllJobs();
         request.setAttribute("jobs", jobs);
         request.getRequestDispatcher("/WEB-INF/pages/jobs.jsp").forward(request, response);
@@ -84,7 +93,15 @@ public class Jobs extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String[] jobIdsAsString = request.getParameterValues("job_ids");
+        if (jobIdsAsString != null) {
+            List<Integer> jobIds = new ArrayList<>();
+            for (String jobIdAsString : jobIdsAsString) {
+                jobIds.add(Integer.parseInt(jobIdAsString));
+            }
+            jobBean.deleteJobsByIds(jobIds);
+        }
+        response.sendRedirect(request.getContextPath() + "/Jobs");
     }
 
     /**

@@ -10,41 +10,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author neagoe
  */
 @Entity
+@Table(name = "CANDIDATES")
+
 public class Candidate implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
+
     private String name;
-    
+
     private String surname;
-    
-    private Integer phone;
-    
+
+    private String phone;
+
     private String email;
-    
+
     private String birthday;
-    
+
     private String sex;
-    
+
     private String nationality;
-    
+
     private String applied_job;
-    
+
     private String career_level;
-    
+
     private String study_level;
-    
+
     private String native_language;
-    
+
     private String foreign_languages;
 
     public String getName() {
@@ -63,11 +66,11 @@ public class Candidate implements Serializable {
         this.surname = surname;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -175,5 +178,5 @@ public class Candidate implements Serializable {
     public String toString() {
         return "com.mycompany.proiectjava.entity.Candidate[ id=" + id + " ]";
     }
-    
+
 }

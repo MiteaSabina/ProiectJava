@@ -9,9 +9,13 @@ import com.mycompany.proiectjava.common.CandidateDetails;
 import com.mycompany.proiectjava.ejb.CandidateBean;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +25,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author neagoe
  */
+@DeclareRoles({"AdminRole", "DirectorGeneralRole", "DirectorDepartamentRole", "DirectorHRRole", "RecruiterRole"})
+@ServletSecurity(
+        value = @HttpConstraint(
+                rolesAllowed = {"DirectorGeneralRole", "RecruiterRole"}))
+
 @WebServlet(name = "Candidates", urlPatterns = {"/Candidates"})
 public class Candidates extends HttpServlet {
-    
+
     @Inject
     private CandidateBean candidateBean;
 
@@ -44,7 +53,7 @@ public class Candidates extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Candidates</title>");            
+            out.println("<title>Servlet Candidates</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Candidates at " + request.getContextPath() + "</h1>");
@@ -65,12 +74,12 @@ public class Candidates extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setAttribute("activePage", "Candidates");
-        
+
         List<CandidateDetails> candidates = candidateBean.getAllCandidates();
         request.setAttribute("candidates", candidates);
-        
+
         request.getRequestDispatcher("/WEB-INF/pages/candidates.jsp").forward(request, response);
     }
 
@@ -85,7 +94,17 @@ public class Candidates extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String[] candidateIdsAsString = request.getParameterValues("candidate_ids");
+        if (candidateIdsAsString != null) {
+            List<Integer> candidateIds = new ArrayList<>();
+            for (String candidateIdAsString : candidateIdsAsString) {
+                candidateIds.add(Integer.parseInt(candidateIdAsString));
+            }
+            candidateBean.deleteCandidatesByIds(candidateIds);
+        }
+        response.sendRedirect(request.getContextPath() + "/Candidates");
+
     }
 
     /**

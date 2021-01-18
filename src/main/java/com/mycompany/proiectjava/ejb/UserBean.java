@@ -8,6 +8,7 @@ package com.mycompany.proiectjava.ejb;
 import com.mycompany.proiectjava.common.UserDetails;
 import com.mycompany.proiectjava.entity.User;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJBException;
@@ -28,6 +29,11 @@ public class UserBean {
     @PersistenceContext
     private EntityManager em;
 
+    public UserDetails findById(Integer userId) {
+        User user = em.find(User.class, userId);
+        return new UserDetails(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getPosition());
+    }
+
     public List<UserDetails> getAllUsers() {
         LOG.info("getAllUsers");
         try {
@@ -45,9 +51,38 @@ public class UserBean {
             UserDetails userDetails = new UserDetails(user.getId(),
                     user.getUsername(),
                     user.getEmail(),
+                    user.getPassword(),
                     user.getPosition());
             detailsList.add(userDetails);
         }
         return detailsList;
+    }
+
+    public void createUser(String username, String email, String passwordSha256, String position) {
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordSha256);
+        user.setPosition(position);
+
+        em.persist(user);
+    }
+
+    public void updateUser(int userId, String username, String email, String password, String position) {
+        LOG.info("updateUser");
+        User user = em.find(User.class, userId);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setPosition(position);
+    }
+
+    public void deleteUsersByIds(Collection<Integer> ids) {
+        LOG.info("deleteUsersByIds");
+        for (Integer id : ids) {
+            User user = em.find(User.class, id);
+            em.remove(user);
+        }
     }
 }
